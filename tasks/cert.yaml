@@ -14,42 +14,30 @@
   ansible.builtin.set_fact:
     ssl_certificate: "{{ output.stdout }}"
     ssl_certificate_file: "{{ output.stdout.split(':')[1].lstrip(' ').rsplit('/', 1)[1].rstrip('\"') }}"
-    ssl_certificate_path: "{{ output.stdout.split(':')[1].lstrip(' ').rsplit('/', 1)[0] }}"
+    ssl_certificate_path: "{{ output.stdout.split(':')[1].lstrip(' ').rsplit('/', 1)[0].lstrip('\"') }}"
 
-#- name: "Get SSLCertificateKeyFile path from {{ ssl_config }}"
-#  ansible.builtin.shell:
-#    cmd: grep -i "SSLCertificateKeyFile /" {{ ssl_config }} | grep -v "#"
-#  register: output
-#  changed_when: output.rc != 0
+- name: "Get TNServer*PrivateKeyFile path from {{ unikixrc }}"
+  ansible.builtin.shell:
+    cmd: grep -i "TNServer" {{ unikixrc }} | grep -i "PrivateKeyFile" | grep -v "!"
+  register: output
+  changed_when: output.rc != 0
 
-#- name: "Set facts based on SSLCertificateKeyFile output"
-#  ansible.builtin.set_fact:
-#    ssl_key: "{{ output.stdout }}"
-#    ssl_key_file: "{{ output.stdout.split(' ')[1].rsplit('/', 1)[1] }}"
-#    ssl_key_path: "{{ output.stdout.split(' ')[1].rsplit('/', 1)[0] }}"
-
-#- name: "Get SSLCertificateChainFile path from {{ ssl_config }}"
-#  ansible.builtin.shell:
-#    cmd: grep -i "SSLCertificateChainFile /" {{ ssl_config }}
-#  register: output
-#  changed_when: output.rc != 0
-
-#- name: "Set facts based on SSLCertificateChainFile output"
-#  ansible.builtin.set_fact:
-#    ssl_chain: "{{ output.stdout }}"
-#    ssl_chain_file: "{{ output.stdout.split(' ')[1].rsplit('/', 1)[1] }}"
-#    ssl_chain_path: "{{ output.stdout.split(' ')[1].rsplit('/', 1)[0] }}"
+- name: "Set facts based on TNServer*PrivateKeyFile output"
+  ansible.builtin.set_fact:
+    ssl_key: "{{ output.stdout }}"
+    ssl_key_file: "{{ output.stdout.split(':')[1].lstrip(' ').rsplit('/', 1)[1].rstrip('\"') }}"
+    ssl_key_path: "{{ output.stdout.split(':')[1].lstrip(' ').rsplit('/', 1)[0].lstrip('\"') }}"
 
 - name: "Print returned information"
   ansible.builtin.debug:
     msg:
       - "{{ ssl_certificate }}"
-#      - "{{ ssl_key }}"
-#      - "{{ ssl_chain }}"
       - "{{ ssl_certificate_path }}"
       - "{{ ssl_certificate_file }}"
-#      - "{{ ssl_key_path }}"
-#      - "{{ ssl_key_file }}"
+      - "{{ ssl_key }}"
+      - "{{ ssl_key_path }}"
+      - "{{ ssl_key_file }}"
+#      - "{{ ssl_chain }}"
 #      - "{{ ssl_chain_path }}"
 #      - "{{ ssl_chain_file }}"
 
