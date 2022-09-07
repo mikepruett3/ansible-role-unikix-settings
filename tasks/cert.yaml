@@ -37,39 +37,33 @@
       - "{{ ssl_key }}"
       - "{{ ssl_key_path }}"
       - "{{ ssl_key_file }}"
-#      - "{{ ssl_chain }}"
-#      - "{{ ssl_chain_path }}"
-#      - "{{ ssl_chain_file }}"
 
-#- name: "Upload Certificates to {{ inventory_hostname }}"
-#  ansible.builtin.copy:
-#    src: "{{ item.src }}"
-#    dest: "{{ item.dest }}"
-#    owner: root
-#    group: root
-#    mode: '0640'
-#  with_items:
-#    - src: "{{ certificate_file }}"
-#      dest: "{{ ssl_certificate_path }}/"
-#    - src: "{{ certificate_key }}"
-#      dest: "{{ ssl_key_path }}/"
-#    - src: "{{ certificate_chain }}"
-#      dest: "{{ ssl_chain_path }}/"
+- name: "Upload Certificates to {{ inventory_hostname }}"
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: '0644'
+  with_items:
+    - src: "{{ certificate_file }}"
+      dest: "{{ ssl_certificate_path }}/"
+    - src: "{{ certificate_key }}"
+      dest: "{{ ssl_key_path }}/"
 
-#- name: "Update {{ ssl_config }} with new Certificate files"
-#  ansible.builtin.lineinfile:
-#    dest: "{{ ssl_config }}"
-#    regexp: "{{ item.regexp }}"
-#    line: "{{ item.line }}"
-#    state: present
-#    #validate: 'apachectl -t'
-#    mode: '0640'
-#    backup: yes
-#  with_items:
-#    - regexp: "^SSLCertificateFile"
-#      line: "SSLCertificateFile {{ ssl_certificate_path }}/{{ certificate_file.rsplit('/', 1)[1] }}"
-#    - regexp: "^SSLCertificateKeyFile"
-#      line: "SSLCertificateKeyFile {{ ssl_key_path }}/{{ certificate_key.rsplit('/', 1)[1] }}"
-#    - regexp: "^SSLCertificateChainFile"
-#      line: "SSLCertificateChainFile {{ ssl_chain_path }}/{{ certificate_chain.rsplit('/', 1)[1] }}"
-#  notify: "Restart Apache HTTP Server Daemon"
+- name: "Update {{ unikixrc }} with new Certificate files"
+  ansible.builtin.lineinfile:
+    dest: "{{ unikixrc }}"
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    owner: "{{ user }}"
+    group: "{{ group }}"
+    mode: '0644'
+    backup: no
+  with_items:
+    - regexp: "^TNServer*CertificateFile:"
+      line: "TNServer*CertificateFile:               \"{{ ssl_certificate_path }}/{{ certificate_file.rsplit('/', 1)[1] }}\""
+    - regexp: "^TNServer*PrivateKeyFile:"
+      line: "TNServer*PrivateKeyFile:                \"{{ ssl_key_path }}/{{ certificate_key.rsplit('/', 1)[1] }}\""
+  #notify: "Restart Apache HTTP Server Daemon"
