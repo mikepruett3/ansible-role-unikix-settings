@@ -1,0 +1,8 @@
+---
+# RedHat vars file for ansible-role-unikix-settings
+
+REGIONS: "/array00/regions"
+REGION: "{{ user }}"
+KIXSYS: "{{ REGIONS }}/{{ REGION }}/system"
+unikixrc: "{{ KIXSYS }}/unikixrc.cfg"
+NSSDIR: "{{ KIXSYS }}/NSSDIR"

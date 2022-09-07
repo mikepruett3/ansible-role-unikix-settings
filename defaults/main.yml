@@ -1,2 +1,10 @@
 ---
 # defaults file for ansible-role-unikix-settings
+
+## Certificate Files ##
+certificate_file: "mycert.crt"
+certificate_key: "mycert.key"
+certificate_chain: "mycert_chain.crt"
+
+user: "ap01"
+group: "ap01"
