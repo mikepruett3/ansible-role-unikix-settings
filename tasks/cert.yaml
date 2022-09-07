@@ -13,8 +13,8 @@
 - name: "Set facts based on TNServer*CertificateFile output"
   ansible.builtin.set_fact:
     ssl_certificate: "{{ output.stdout }}"
-    ssl_certificate_file: "{{ output.stdout.split(':')[1].lstrip(' ').rsplit('/', 1)[1] }}"
-    #ssl_certificate_path: "{{ output.stdout.split(' ')[1].rsplit('/', 1)[0] }}"
+    ssl_certificate_file: "{{ output.stdout.split(':')[1].lstrip(' ').rsplit('/', 1)[1].rstrip('\"') }}"
+    ssl_certificate_path: "{{ output.stdout.split(':')[1].lstrip(' ').rsplit('/', 1)[0] }}"
 
 #- name: "Get SSLCertificateKeyFile path from {{ ssl_config }}"
 #  ansible.builtin.shell:
@@ -46,7 +46,7 @@
       - "{{ ssl_certificate }}"
 #      - "{{ ssl_key }}"
 #      - "{{ ssl_chain }}"
-#      - "{{ ssl_certificate_path }}"
+      - "{{ ssl_certificate_path }}"
       - "{{ ssl_certificate_file }}"
 #      - "{{ ssl_key_path }}"
 #      - "{{ ssl_key_file }}"
