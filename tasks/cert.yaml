@@ -59,7 +59,7 @@
     state: present
     owner: "{{ user }}"
     group: "{{ group }}"
-    mode: '0754'
+    mode: '0644'
     backup: no
   with_items:
     - regexp: "^TNServer\\*CertificateFile:"
