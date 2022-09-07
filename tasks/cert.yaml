@@ -28,15 +28,15 @@
     ssl_key_file: "{{ output.stdout.split(':')[1].lstrip(' ').rsplit('/', 1)[1].rstrip('\"') }}"
     ssl_key_path: "{{ output.stdout.split(':')[1].lstrip(' ').rsplit('/', 1)[0].lstrip('\"') }}"
 
-- name: "Print returned information"
-  ansible.builtin.debug:
-    msg:
-      - "{{ ssl_certificate }}"
-      - "{{ ssl_certificate_path }}"
-      - "{{ ssl_certificate_file }}"
-      - "{{ ssl_key }}"
-      - "{{ ssl_key_path }}"
-      - "{{ ssl_key_file }}"
+#- name: "Print returned information"
+#  ansible.builtin.debug:
+#    msg:
+#      - "{{ ssl_certificate }}"
+#      - "{{ ssl_certificate_path }}"
+#      - "{{ ssl_certificate_file }}"
+#      - "{{ ssl_key }}"
+#      - "{{ ssl_key_path }}"
+#      - "{{ ssl_key_file }}"
 
 - name: "Upload Certificates to {{ inventory_hostname }}"
   ansible.builtin.copy:
