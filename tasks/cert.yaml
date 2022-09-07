@@ -59,11 +59,11 @@
     state: present
     owner: "{{ user }}"
     group: "{{ group }}"
-    mode: '0644'
+    mode: '0754'
     backup: no
   with_items:
-    - regexp: "^TNServer*CertificateFile:"
-      line: "TNServer*CertificateFile:               \"{{ ssl_certificate_path }}/{{ certificate_file.rsplit('/', 1)[1] }}\""
-    - regexp: "^TNServer*PrivateKeyFile:"
-      line: "TNServer*PrivateKeyFile:                \"{{ ssl_key_path }}/{{ certificate_key.rsplit('/', 1)[1] }}\""
+    - regexp: "^TNServer\\*CertificateFile:"
+      line: "TNServer*CertificateFile:               {{ ssl_certificate_path }}/{{ certificate_file.rsplit('/', 1)[1] }}"
+    - regexp: "^TNServer\\*PrivateKeyFile:"
+      line: "TNServer*PrivateKeyFile:                {{ ssl_key_path }}/{{ certificate_key.rsplit('/', 1)[1] }}"
   #notify: "Restart Apache HTTP Server Daemon"
