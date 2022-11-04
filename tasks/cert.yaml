@@ -2,7 +2,8 @@
 # Certificate tasks file for ansible-role-unikix-settings
 
 - name: "Include OS-specific variables"
-  include_vars: "{{ ansible_os_family }}.yaml"
+  ansible.builtin.include_vars:
+    file: "{{ ansible_os_family }}.yaml"
 
 - name: "Get TNServer*CertificateFile path from {{ unikixrc }}"
   ansible.builtin.shell:
