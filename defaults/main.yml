@@ -5,6 +5,7 @@
 certificate_file: "mycert.crt"
 certificate_key: "mycert.key"
 certificate_chain: "mycert_chain.crt"
+certificate_der: "mycert.der"
 
 user: "ap01"
 group: "ap01"

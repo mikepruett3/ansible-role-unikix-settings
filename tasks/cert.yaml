@@ -51,6 +51,8 @@
       dest: "{{ ssl_certificate_path }}/"
     - src: "{{ certificate_key }}"
       dest: "{{ ssl_key_path }}/"
+    - src: "{{ certificate_der }}"
+      dest: "{{ ssl_key_path }}/"
 
 - name: "Update {{ unikixrc }} with new Certificate files"
   ansible.builtin.lineinfile:
